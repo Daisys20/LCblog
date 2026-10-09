@@ -1,0 +1,3240 @@
+/* ============================================================
+   主题变量：亮色（默认）
+   ============================================================ */
+:root {
+  --bg: #f6f9fe;
+  --surface: #ffffff;
+  --surface-soft: #f3f4f6;
+  --border: #e8eaee;
+  --text: #1f2328;
+  --text-muted: #6b7280;
+  --accent: #2563eb;
+  --accent-soft: #eaf1ff;
+  --ok: #16a34a;
+  --art-shadow: rgba(15, 23, 42, 0.08);
+  --danger: #b42318;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 4px 16px rgba(16, 24, 40, 0.06);
+  --shadow-soft: 0 1px 2px rgba(16, 24, 40, 0.035);
+  --header-bg: rgba(255, 255, 255, 0.9);
+  /* 顶部导航：容器不铺底色，--nav-bg 只给搜索框用 */
+  --nav-bg: #f4f6fa;
+  --nav-fg: #78839a;
+  --nav-hover: rgba(15, 23, 42, 0.05);
+  --nav-active-bg: #e6eeff;
+  --logo-ring: #23477f;
+  /* 网格上流动光束的配色（rgb 三元组，供 canvas 拼 rgba 使用） */
+  --flow-a: 8, 145, 178;
+  --flow-b: 79, 100, 230;
+  /* 指针高光 */
+  --glow-color: rgba(37, 99, 235, 0.09);
+  /* 音乐播放器 */
+  --music-bar: #e6e9f0;
+  --music-heart: #f0f2f6;
+  --music-art: #9aa3b2;
+
+  /* ---------- 字体方案 ---------- */
+  /* 正文 / 标题：思源黑体 */
+  --font-sans: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  /* 人生语录：霞鹜文楷 */
+  --font-quote: 'LXGW WenKai', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', serif;
+  /* 英文：Cormorant Garamond Italic */
+  --font-en: 'Cormorant Garamond', 'Noto Sans SC', Georgia, 'Times New Roman', serif;
+  /* 签名：Caveat */
+  --font-sign: 'Caveat', 'LXGW WenKai', 'Noto Sans SC', cursive;
+}
+
+/* 暗色主题 */
+html[data-theme='dark'] {
+  --bg: #0f1115;
+  --surface: #171a1f;
+  --surface-soft: #1e2127;
+  --border: #272b33;
+  --text: #e6e8eb;
+  --text-muted: #98a0ac;
+  --accent: #5b8def;
+  --accent-soft: #1b2740;
+  --ok: #4ade80;
+  --art-shadow: rgba(0, 0, 0, 0.35);
+  --danger: #f2978e;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 20px rgba(0, 0, 0, 0.28);
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --header-bg: rgba(23, 26, 31, 0.9);
+  /* 顶部导航：容器不铺底色，--nav-bg 只给搜索框用 */
+  --nav-bg: #1c2028;
+  --nav-fg: #8b95a6;
+  --nav-hover: rgba(255, 255, 255, 0.07);
+  --nav-active-bg: #1e2a44;
+  --logo-ring: #9dc0ec;
+  --flow-a: 45, 212, 191;
+  --flow-b: 129, 140, 248;
+  --glow-color: rgba(129, 170, 255, 0.18);
+  /* 音乐播放器 */
+  --music-bar: #30353d;
+  --music-heart: #22262d;
+  --music-art: #6b7382;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ============================================================
+   背景流动光束（canvas）
+   ============================================================ */
+.flow-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 内容层压在光束之上 */
+.site-main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   顶部导航
+   ============================================================ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--header-bg);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header__inner {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 30px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 站点标识：两行文字 + 星球图标 */
+.site-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.site-logo__mark {
+  display: inline-flex;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.site-logo__mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.site-logo__ring {
+  fill: none;
+  stroke: var(--logo-ring);
+  stroke-width: 1.7;
+}
+
+.site-logo__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.16;
+}
+
+.site-logo__title {
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--text);
+}
+
+.site-logo__sub {
+  margin-top: 1px;
+  font-size: 10.5px;
+  letter-spacing: 0.4px;
+  color: var(--text-muted);
+}
+
+/* 导航容器本身不铺底色，只有被选中的那一项有背景（见 __link--active） */
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  flex: 0 1 auto;
+  margin: 0 auto;
+  min-width: 0;
+  padding: 4px 0;
+}
+
+.site-nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px 7px;
+  border-radius: 999px;
+  color: var(--nav-fg);
+  font-size: 14px;
+  white-space: nowrap;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.site-nav__link svg {
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.site-nav__link:hover {
+  background: var(--nav-hover);
+  color: var(--text);
+}
+
+.site-nav__link--active {
+  background: var(--nav-active-bg);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.site-nav__link--active svg {
+  opacity: 1;
+}
+
+/* 右侧工具区：搜索框 + 图标按钮 */
+.header-tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.header-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  flex: 0 1 208px;
+  min-width: 0;
+  padding: 0 12px;
+  background: var(--nav-bg);
+  border: 1px solid transparent;
+  border-radius: 11px;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.header-search:focus-within {
+  background: var(--surface);
+  border-color: var(--accent);
+}
+
+.header-search__icon {
+  display: inline-flex;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.header-search__input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13.5px;
+  color: var(--text);
+  font-family: inherit;
+}
+
+.header-search__input::placeholder {
+  color: var(--text-muted);
+}
+
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.icon-btn:hover {
+  background: var(--nav-hover);
+  color: var(--accent);
+}
+
+.icon-btn--on {
+  color: var(--text);
+}
+
+@media (max-width: 1400px) {
+  .site-nav__link {
+    gap: 5px;
+    padding: 6px 10px 7px;
+  }
+
+  .header-search {
+    flex-basis: 178px;
+  }
+}
+
+/* 导航从 5 项加到 8 项后，中等宽度放不下整排文字：
+   只留图标（鼠标悬停有原生 title 提示），选中项的底色照旧。 */
+@media (max-width: 1200px) {
+  .site-nav {
+    gap: 1px;
+  }
+
+  .site-nav__label {
+    display: none;
+  }
+
+  .site-nav__link {
+    padding: 6px 11px 7px;
+  }
+}
+
+@media (max-width: 960px) {
+  .header-search {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .site-header__inner,
+  .site-main,
+  .site-footer__inner {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* 页脚右侧要持续给悬浮按钮留位，不能跟页头一起收到 16px */
+  .site-footer__inner {
+    padding-right: 88px;
+  }
+}
+
+@media (max-width: 860px) {
+  .site-header__inner {
+    height: auto;
+    flex-wrap: wrap;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    gap: 10px;
+  }
+
+  .site-logo {
+    order: 1;
+  }
+
+  .header-tools {
+    order: 2;
+  }
+
+  .site-nav {
+    order: 3;
+    flex-basis: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .site-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .site-nav__link {
+    padding: 6px 10px 7px;
+    font-size: 13px;
+  }
+}
+
+/* ============================================================
+   页面骨架
+   ============================================================ */
+.site-main {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 26px 30px 56px;
+  min-height: 60vh;
+}
+
+/* 跟随背景：不铺底色、不画分割线，直接融进背景 */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.site-footer__inner {
+  max-width: 1600px;
+  margin: 0 auto;
+  /* 右侧多留 88px：固定悬浮的「回到顶部」按钮（距右 26 + 42 宽）正好落在这一带，
+     否则会盖住页脚最后一个链接 */
+  padding: 18px 88px 18px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.site-footer__copy {
+  flex-shrink: 0;
+}
+
+.site-footer__links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.site-footer__links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.site-footer__links a:hover {
+  color: var(--accent);
+}
+
+/* ============================================================
+   回到顶部（悬浮按钮）
+   全站唯一入口：固定在窗口右下角，滚过一屏才浮出来。
+   由页脚那颗圆按钮 + Keep going 卡右下角的装饰箭头合并而来。
+   ============================================================ */
+.to-top {
+  position: fixed;
+  right: 26px;
+  bottom: 26px;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--surface) 78%, transparent);
+  color: var(--accent);
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16);
+  backdrop-filter: blur(14px) saturate(1.3);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  cursor: pointer;
+  /* 隐藏时用 visibility 一起收掉，避免被 Tab 聚焦到 */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px) scale(0.94);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease,
+    color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.to-top--on {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.to-top:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.to-top:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.to-top svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* ============================================================
+   首页 Bento（个人主页）
+   ============================================================ */
+.profile {
+  display: block;
+  perspective: 1200px;
+}
+
+/* ---------- 第一行：横幅（当前状态叠在图上）+ 人生语录 ---------- */
+.bento-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.42fr);
+  gap: 10px;
+  align-items: stretch;
+  margin-bottom: 10px;
+  perspective: 1100px;
+}
+
+/* 横幅：高度由 aspect-ratio 决定，内边距归零让图铺满整卡 */
+.bento-top > .bento-card--banner {
+  padding: 0;
+}
+
+/* 顶行第二张卡是「人生语录 + 签名」的整图卡：
+   取消 media 卡自带的最小高度（188px），让这一行继续由横幅决定；
+   内边距归零，图片铺满整卡、语录与签名压在底部。 */
+.bento-top > .bento-card--media {
+  min-height: 0;
+  padding: 0;
+}
+
+/* ---------- 下面：四列网格 ----------
+   列1 个人属性 / 世界观 / 生活展示   列2 能力 / 项目 / 歌单
+   列3 2026 计划 / 收藏              列4 想法 / 日志 / Keep going
+   四列底部对齐，多出的高度由每列的「吸收卡」吃掉（见下面「四列高度配平」）。 */
+.bento {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.02fr) minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 10px;
+  /* stretch + 每列一张 .bento-card--grow：四列底部对齐，见下面「四列高度配平」 */
+  align-items: stretch;
+  perspective: 1100px;
+}
+
+.bento__col {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* ---------- 四列高度配平 ----------
+   四列内容量差别很大，靠 CSS 让它们自然等高：
+   1) .bento 用 align-items: stretch，四个 .bento__col 等高；
+   2) 每列指定一张「吸收卡」（.bento-card--grow）吃掉该列剩余高度。
+   吸收方式按卡片内容挑最不容易看出拉伸的：
+     列1 个人属性 → 数值条行距变匀
+     列2 我的项目 → 项目行之间撑开
+     列3 我的收藏 → 缩略图跟着长高（图片，拉伸最自然）
+     列4 最近在想什么 + 人生日志 → 两卡按内容比例分摊（行距 / 年份分组间距）
+   窄屏（≤760px 全部竖排）时列高由内容决定，这套规则自动失效。 */
+.bento__col > .bento-card--grow {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.bento__col > .bento-card--grow > .card-head {
+  flex: 0 0 auto;
+}
+
+/* 列1：数值条逐行等分剩余高度 */
+.bento-card--attrs > .attrs {
+  flex: 1 1 auto;
+}
+
+.bento-card--attrs .attrs__row {
+  flex: 1 1 auto;
+}
+
+/* 列2：项目行等分 */
+.bento-card--projects > .projects {
+  flex: 1 1 auto;
+}
+
+.bento-card--projects .projects__item {
+  flex: 1 1 auto;
+}
+
+/* 列3：收藏改成两行两列，剩余高度由缩略图分掉后各自长高 */
+.bento-card--collection > .collection {
+  flex: 1 1 auto;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+}
+
+.bento-card--collection .collection__thumb {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* 列4：分给「最近在想什么」和「人生日志」两张卡，
+   前者行距变匀、后者年份分组之间撑开，单张卡的拉伸都不明显 */
+.bento-card--thoughts > .thoughts {
+  flex: 1 1 auto;
+}
+
+.bento-card--thoughts .thoughts__item {
+  flex: 1 1 auto;
+}
+
+.bento-card--journey > .journey {
+  flex: 1 1 auto;
+  justify-content: space-between;
+}
+
+.bento-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px 18px;
+  box-shadow: var(--shadow-soft);
+  /* 位移与倾斜由 JS 逐帧插值，这里不要再过渡 transform，否则会拖尾打架 */
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  will-change: transform;
+}
+
+/* 跟随指针的柔光，位置由 useMagnetic 写入 --mx/--my/--glow */
+.bento-card::after,
+.post-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: var(--glow, 0);
+  background: radial-gradient(
+    240px circle at var(--mx, 50%) var(--my, 50%),
+    var(--glow-color),
+    transparent 62%
+  );
+  transition: opacity 0.2s ease;
+}
+
+.bento-card:hover,
+.bento-card.is-near {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  box-shadow: var(--shadow);
+}
+
+/* ---------- 卡片通用头部 ---------- */
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.card-head__main {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.card-head__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  line-height: 1.35;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.card-head__sub {
+  margin: 3px 0 0;
+  font-size: 11.5px;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.card-head__badge {
+  flex-shrink: 0;
+  padding: 1px 7px;
+  border-radius: 5px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 10.5px;
+  line-height: 17px;
+}
+
+.card-head__more {
+  flex-shrink: 0;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+a.card-head__more:hover {
+  color: var(--accent);
+}
+
+/* ---------- 状态胶囊 ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-size: 10.5px;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.pill--online {
+  background: color-mix(in srgb, var(--ok) 14%, transparent);
+  color: var(--ok);
+}
+
+.pill__dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 18%, transparent);
+}
+
+/* ---------- 顶部横幅 ----------
+   山河照做底（原图 3:1），介绍不再单独占一行文字，
+   改成右侧中部一块虚化蒙版：名字 / 身份 / 一句话介绍 + 城市 · 日期 · 天气。
+   卡片高度由 aspect-ratio 决定（比图片更扁，上下各裁掉一点：上面是空天、
+   下面是人物的山石），也就是顶行行高。 */
+.bento-card--banner {
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 1;
+  padding: 0;
+  border-color: transparent;
+  overflow: hidden;
+  /* aspect-ratio 会通过 min-height 反推出一个自动最小宽度（200px × 4 = 800px），
+     把同一行的语录卡挤窄，必须显式归零 */
+  min-width: 0;
+  /* 蒙版里的字号用 cqw 表达，卡片变宽变窄时文字跟着等比缩放 */
+  container-type: inline-size;
+}
+
+.bento-card--banner:hover {
+  border-color: transparent;
+}
+
+.banner__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 裁切位置偏下：上面裁掉的是空天，保住图里自带的手写短句和人物 */
+  object-position: center 69%;
+}
+
+/* 右侧中部：一块磨砂蒙版，把名字与城市 / 日期 / 天气收在一起 */
+.banner__mask {
+  position: absolute;
+  top: 50%;
+  right: 2.4cqw;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5cqw;
+  width: max-content;
+  max-width: 44%;
+  padding: 1.6cqw 1.8cqw 1.7cqw;
+  /* 不描边：只靠模糊 + 一点底色，看起来就是一块蒙版而不是一张小卡片 */
+  border: 0;
+  border-radius: 1.6cqw;
+  background: rgba(9, 15, 27, 0.26);
+  box-shadow: 0 16px 44px rgba(4, 8, 16, 0.26);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+}
+
+/* 名字 + 身份 + 一句话介绍 */
+.banner__sign {
+  display: flex;
+  flex-direction: column;
+  gap: 0.12cqw;
+  margin: 0;
+}
+
+.banner__name {
+  color: #fff;
+  /* 下限兜底：列宽掉到 830 以下时 cqw 会算得比 10px 还小，读不出来 */
+  font-size: clamp(15px, 2.1cqw, 22px);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  line-height: 1.25;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4);
+}
+
+.banner__role {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(10.5px, 1.25cqw, 13px);
+  letter-spacing: 0.05em;
+}
+
+.banner__desc {
+  margin: 0.3cqw 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(10.5px, 1.25cqw, 13px);
+  line-height: 1.5;
+}
+
+/* 名字区与城市 / 日期之间的一条细分隔线 */
+.banner__rule {
+  height: 1px;
+  margin: 0.45cqw 0;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.banner__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35cqw 1cqw;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: clamp(10.5px, 1.28cqw, 13px);
+  letter-spacing: 0.02em;
+}
+
+.banner__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4cqw;
+}
+
+.banner__meta-item svg {
+  width: clamp(12px, 1.4cqw, 15px);
+  height: clamp(12px, 1.4cqw, 15px);
+}
+
+.banner__status-note {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1cqw;
+  margin: 0.25cqw 0 0;
+  color: #fff;
+  font-size: clamp(11px, 1.35cqw, 14px);
+  font-weight: 600;
+  line-height: 1.5;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.32);
+}
+
+/* Keep going：整图做底，正文用绝对定位浮在图上（手写 "Keep going." 烤在底图里）。
+   卡片不参与列高伸缩（flex: 0 0 auto），高度由图片自身比例决定。 */
+.bento-card--keep {
+  display: block;
+  flex: 0 0 auto;
+  min-height: 0;
+  /* 让下面的 cqw 按卡片宽度取算，文字随卡片一起缩放 */
+  container-type: inline-size;
+}
+
+.keep__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* 文字块位置 / 字号照抄设计稿（356×357 底图上的实测比例）：
+   左边界 9.3%、首行墨迹顶 61.5%、行距 13.5px、最长一行到 41.6% */
+.keep__body {
+  position: absolute;
+  top: 60.4%;
+  left: 9%;
+  display: flex;
+  flex-direction: column;
+  width: 62%;
+  color: #5f6a85;
+  font-size: 8.3px;
+  /* 按卡片宽度取算，卡片放大缩小时文字跟着缩放 */
+  font-size: 2.36cqw;
+  line-height: 1.61;
+  letter-spacing: 0.06px;
+}
+
+.keep__para {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+/* 段间空一行（设计稿里两段之间正好隔一个行高） */
+.keep__para + .keep__para {
+  margin-top: 1.61em;
+}
+
+.keep__line {
+  display: block;
+  white-space: nowrap;
+}
+
+/* 右下角原来那个装饰性箭头已并入全站悬浮的「回到顶部」按钮，
+   见文件末尾「回到顶部（悬浮按钮）」一节 */
+
+/* ---------- 叠在横幅图上的「当前状态」----------
+   .banner__meta / .banner__status-note / .banner__status-dim
+   由上面的 .banner__mask 统一承载，这里只留窄屏（图文分离）时的兜底。 */
+
+.banner__status-dim {
+  color: rgba(255, 255, 255, 0.74);
+  font-size: clamp(10.5px, 1.22cqw, 13px);
+  font-weight: 400;
+}
+
+/* ---------- 个人属性 ---------- */
+.os-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.os-head__name {
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.1px;
+  white-space: nowrap;
+}
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 0 0 14px;
+  padding: 0;
+}
+
+.facts__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11.5px;
+}
+
+.facts__row dt {
+  color: var(--text-muted);
+}
+
+.facts__row dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.attrs__caption {
+  margin: 0 0 9px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--text-muted);
+}
+
+.attrs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.attrs__row {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+}
+
+.attrs__track {
+  height: 5px;
+  border-radius: 999px;
+  background: var(--music-bar);
+  overflow: hidden;
+}
+
+.attrs__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--accent), color-mix(in srgb, var(--accent) 62%, #22d3ee));
+}
+
+.attrs__value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.attrs__footnote {
+  margin: 11px 0 0;
+  font-size: 10.5px;
+  /* 中文不做合成斜体（同 .attrs__label 的处理） */
+  font-style: normal;
+  color: var(--text-muted);
+}
+
+/* ---------- 2026 年计划（可展开的计划板） ----------
+   一行一个「大类」（学习 / 健身 / …），点行展开下方的具体计划；
+   勾选一条具体计划，大类的进度条就按这条计划的 weight 前进。 */
+.plan {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plan__cat {
+  border-radius: 10px;
+  transition: background 0.15s ease;
+}
+
+.plan__cat:hover,
+.plan__cat.is-open {
+  background: var(--surface-soft);
+}
+
+/* 大类行：图标 | 名称 + 说明 | 进度条 | 百分比 | 箭头 */
+.plan__row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 8px 7px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.plan__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 27px;
+  height: 27px;
+  border-radius: 8px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.plan__icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.plan__text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.plan__name {
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.plan__desc {
+  overflow: hidden;
+  font-size: 10.5px;
+  line-height: 1.45;
+  color: var(--text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.plan__track {
+  flex: 0 0 76px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--music-bar);
+  overflow: hidden;
+}
+
+.plan__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 五个大类的进度色：同一套冷色调 family，蓝→靛→紫→天蓝→青 */
+.plan__fill--0 {
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+}
+
+.plan__fill--1 {
+  background: linear-gradient(90deg, #6366f1, #818cf8);
+}
+
+.plan__fill--2 {
+  background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+}
+
+.plan__fill--3 {
+  background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+}
+
+.plan__fill--4 {
+  background: linear-gradient(90deg, #14b8a6, #2dd4bf);
+}
+
+.plan__pct {
+  flex: 0 0 32px;
+  text-align: right;
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.plan__chev {
+  display: grid;
+  place-items: center;
+  flex: 0 0 14px;
+  color: var(--text-muted);
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+}
+
+.plan__chev svg {
+  display: block;
+  width: 13px;
+  height: 13px;
+}
+
+.plan__cat.is-open .plan__chev {
+  transform: rotate(90deg);
+}
+
+/* 展开后的具体计划 */
+.plan__tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0 7px 7px 43px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.plan__task {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 5px 7px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.plan__task:hover {
+  background: var(--surface);
+}
+
+.plan__check {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+  opacity: 0.6;
+  transition: color 0.15s ease, opacity 0.15s ease;
+}
+
+.plan__check svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+.plan__task-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.plan__weight {
+  flex-shrink: 0;
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  transition: color 0.15s ease;
+}
+
+.plan__task.is-done .plan__check {
+  color: var(--accent);
+  opacity: 1;
+}
+
+.plan__task.is-done .plan__task-title {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in srgb, var(--text-muted) 60%, transparent);
+}
+
+.plan__task.is-done .plan__weight {
+  color: var(--accent);
+}
+
+.plan__overall {
+  flex-shrink: 0;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 17px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.plan__hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 11px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.plan__hint svg {
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+}
+
+/* ---------- 我的能力 ---------- */
+.skill-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.skill-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 3px 7px;
+  background: var(--surface-soft);
+  border: 1px solid transparent;
+  border-radius: 10px;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+
+.skill-tile:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 38%, transparent);
+  background: var(--surface);
+}
+
+.skill-tile__name {
+  display: -webkit-box;
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 10px;
+  line-height: 1.22;
+  color: var(--text-muted);
+  text-align: center;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+/* ---------- 我的世界观 ---------- */
+.worldview {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 2px;
+  overflow: visible;
+}
+
+.worldview__link {
+  stroke: var(--border);
+  stroke-width: 1.2;
+  stroke-dasharray: 3 4;
+}
+
+.worldview__orbit {
+  fill: none;
+  stroke: var(--border);
+  stroke-width: 1;
+  stroke-dasharray: 4 7;
+  opacity: 0.75;
+}
+
+.worldview__title {
+  fill: var(--text);
+  font-size: 12px;
+  font-weight: 700;
+  text-anchor: middle;
+}
+
+.worldview__desc {
+  fill: var(--text-muted);
+  font-size: 9.5px;
+  text-anchor: middle;
+}
+
+.worldview__center {
+  fill: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-anchor: middle;
+}
+
+/* ---------- 我的收藏 ---------- */
+.collection {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.collection__item {
+  grid-column: span 3;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* 卡片整体是链接（点进去看对应的生活页标签页） */
+.collection__link {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  color: inherit;
+}
+
+.collection__thumb {
+  display: block;
+  aspect-ratio: 16 / 10;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface-soft);
+}
+
+.collection__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.collection__item:hover .collection__thumb img {
+  transform: scale(1.055);
+}
+
+.collection__title {
+  margin-top: 5px;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.collection__desc {
+  margin-top: 1px;
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* ---------- 我的项目 ---------- */
+.projects {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.projects__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 4px;
+  border-radius: 11px;
+  transition: background 0.15s ease;
+}
+
+.projects__item:hover {
+  background: var(--surface-soft);
+}
+
+.projects__thumb {
+  flex-shrink: 0;
+  width: 104px;
+  border-radius: 9px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  line-height: 0;
+}
+
+.projects__thumb svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.projects__body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.projects__title {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.projects__desc {
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.projects__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 3px;
+}
+
+.projects__stack em {
+  padding: 1px 6px;
+  border-radius: 5px;
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-size: 10px;
+  font-style: normal;
+}
+
+/* ---------- 生活展示（原「我最喜欢的风景」）----------
+   三张竖构图并排；比例从 4:3 改成 3:4，整张图比原来高一档。 */
+.life {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.life__item {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.life__thumb {
+  display: block;
+  aspect-ratio: 3 / 4;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface-soft);
+}
+
+.life__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.life__item:hover .life__thumb img {
+  transform: scale(1.06);
+}
+
+.life__title {
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.life__desc {
+  font-size: 10.5px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+/* ---------- 最近在想什么 ---------- */
+.thoughts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.thoughts__item {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 7px 6px;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+
+.thoughts__item:hover {
+  background: var(--surface-soft);
+}
+
+.thoughts__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.thoughts__icon svg {
+  width: 12px;
+  height: 12px;
+}
+
+.thoughts__link {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-size: 12.5px;
+  color: var(--text);
+  text-decoration: none;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.thoughts__link:hover {
+  color: var(--accent);
+}
+
+.thoughts__date {
+  flex-shrink: 0;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.thoughts__hint {
+  margin: 6px 0;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.thoughts__hint--error {
+  color: var(--danger);
+}
+
+/* ---------- 人生日志 ---------- */
+.journey {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.journey__year {
+  display: inline-block;
+  margin-bottom: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--accent);
+}
+
+.journey__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 13px;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.journey__item {
+  position: relative;
+  display: flex;
+  gap: 8px;
+  font-size: 11.5px;
+  line-height: 1.5;
+}
+
+.journey__item::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: -15.5px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.journey__date {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.journey__text {
+  min-width: 0;
+}
+
+/* ---------- 整图卡片（名言 / Keep going） ---------- */
+.bento-card--media {
+  position: relative;
+  display: flex;
+  min-height: 188px;
+  padding: 0;
+  border-color: transparent;
+  overflow: hidden;
+}
+
+.bento-card--media:hover {
+  border-color: transparent;
+}
+
+.media__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 语录卡：横幅变扁后语录卡也跟着变宽，按底部对齐把山体留在画面里，
+   否则整个卡片只剩一大片天空 */
+.bento-card--quote .media__img {
+  object-position: center bottom;
+}
+
+.media__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 12, 20, 0.18) 0%, rgba(8, 12, 20, 0.7) 100%);
+}
+
+.quote__body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 6px;
+  width: 100%;
+  padding: 18px;
+}
+
+.quote__text {
+  margin: 0;
+  color: #fff;
+  font-size: 12.5px;
+  line-height: 1.65;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.4);
+}
+
+.quote__author {
+  margin: 0;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 11.5px;
+  font-style: italic;
+}
+
+/* ============================================================
+   音乐播放器卡片
+   ============================================================ */
+.music__source {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+  color: var(--accent);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 17px;
+}
+
+.music__now {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* 唱片：播放时缓慢旋转，暂停停在原角度 */
+.music__vinyl {
+  position: relative;
+  width: 74px;
+  height: 74px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--music-heart);
+  box-shadow: 0 0 0 1px var(--border), 0 2px 10px rgba(15, 23, 42, 0.1);
+  overflow: hidden;
+  animation: vinyl-spin 9s linear infinite;
+  animation-play-state: paused;
+}
+
+.music__vinyl.is-spinning {
+  animation-play-state: running;
+}
+
+.music__vinyl img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.music__vinyl svg {
+  width: 60%;
+  height: 60%;
+  margin: 20%;
+  display: block;
+}
+
+/* 唱片中心孔 */
+.music__vinyl-hole {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 15px;
+  height: 15px;
+  margin: -7.5px 0 0 -7.5px;
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.06);
+}
+
+@keyframes vinyl-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music__vinyl {
+    animation: none;
+  }
+}
+
+.music__meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.music__title {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.music__artist {
+  margin: 3px 0 0;
+  font-size: 14px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.music__desc {
+  margin: 6px 0 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* 进度条 */
+.music__bar-wrap {
+  margin-top: 14px;
+  padding: 7px 0;
+  cursor: pointer;
+  touch-action: none;
+}
+
+.music__bar-wrap:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.music__bar {
+  position: relative;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--music-bar);
+}
+
+.music__bar-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width 0.08s linear;
+}
+
+.music__bar-knob {
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.music__bar-wrap:hover .music__bar-knob {
+  opacity: 1;
+}
+
+.music__time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+/* 控制区 */
+.music__controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.music__btn {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+.music__btn svg {
+  width: 17px;
+  height: 17px;
+}
+
+.music__btn:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  color: var(--accent);
+}
+
+.music__btn:active {
+  transform: scale(0.94);
+}
+
+.music__btn--main {
+  width: 42px;
+  height: 42px;
+  border-color: transparent;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--accent) 32%, transparent);
+}
+
+.music__btn--main svg {
+  width: 21px;
+  height: 21px;
+}
+
+.music__btn--main:hover {
+  color: #fff;
+  filter: brightness(1.06);
+}
+
+.music__link {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.music__link:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.music__warn {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--danger);
+}
+
+.music__empty {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+/* 曲目列表 */
+.music__list {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  /* 36px 一行，正好 5 行，避免露出半行 */
+  max-height: 180px;
+  overflow-y: auto;
+  border-top: 1px solid var(--border);
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+}
+
+/* 还有内容在下方时，底部渐隐提示可滚动 */
+.music__list.is-faded {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent);
+}
+
+.music__item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  height: 36px;
+  padding: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.music__item:hover {
+  background: var(--surface-soft);
+}
+
+.music__item.is-active {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.music__item-index {
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.music__item.is-active .music__item-index {
+  color: var(--accent);
+}
+
+.music__item-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.music__item-artist {
+  flex-shrink: 0;
+  max-width: 42%;
+  font-size: 12px;
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+@media (max-width: 1240px) {
+  /* 四列改为两列（2 × 2），列内卡片顺序不变 */
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* 顶行：语录卡变窄后，最小高度兜底，避免底图被压成细条 */
+  .bento-top > .bento-card--media {
+    min-height: 150px;
+  }
+
+  /* 顶行两列的区间里横幅列宽会掉到 585~825，4:1 算出来只有 145~205 高，
+     蒙版（约 145~160 高）几乎顶满卡片。
+     注意不能只写 min-height：aspect-ratio 会拿 min-height 反推出一个
+     800px 的已用宽度，把整张卡撑出所属列（顶行的语录卡被挤窄）。
+     所以这里直接把 aspect-ratio 关掉，高度交给 min-height。 */
+  .bento-card--banner {
+    aspect-ratio: auto;
+    min-height: 210px;
+  }
+}
+
+@media (max-width: 900px) {
+  /* 顶行改竖排：横幅一行，语录一行 */
+  .bento-top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bento-top > .bento-card--media {
+    min-height: 168px;
+  }
+
+  /* 单列时横幅只剩 ~330px 宽，4:1 的底图压成 80px 高，蒙版塞不下：
+     改成「图 + 下方信息」两段式，蒙版落到图下、回到主题色、不再用 cqw */
+  .bento-card--banner {
+    aspect-ratio: auto;
+    container-type: normal;
+  }
+
+  .banner__img {
+    position: static;
+    height: auto;
+    object-position: center;
+  }
+
+  .banner__mask {
+    position: static;
+    top: auto;
+    right: auto;
+    transform: none;
+    width: auto;
+    max-width: none;
+    gap: 6px;
+    padding: 13px 15px 15px;
+    border: 0;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    background: var(--surface-soft);
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .banner__sign {
+    gap: 2px;
+  }
+
+  .banner__name {
+    color: var(--text);
+    font-size: 17px;
+    letter-spacing: 0.14em;
+    text-shadow: none;
+  }
+
+  .banner__role {
+    color: var(--text-muted);
+    font-size: 11px;
+  }
+
+  .banner__desc {
+    margin-top: 2px;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  .banner__rule {
+    margin: 3px 0;
+    background: var(--border);
+  }
+
+  .banner__meta {
+    gap: 4px 11px;
+    color: var(--text-muted);
+    font-size: 11.5px;
+  }
+
+  .banner__meta-item {
+    gap: 5px;
+  }
+
+  .banner__meta-item svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .banner__status-note {
+    margin-top: 2px;
+    color: var(--text);
+    font-size: 12.5px;
+    text-shadow: none;
+  }
+
+  .banner__status-dim {
+    color: var(--text-muted);
+    font-size: 11.5px;
+  }
+
+  .music__list {
+    max-height: 144px;
+  }
+}
+
+@media (max-width: 760px) {
+  /* 两列也放不下时，全部竖排 */
+  .bento {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* 手机上把悬浮的「回到顶部」收小、贴边一些 */
+  .to-top {
+    right: 16px;
+    bottom: 16px;
+    width: 38px;
+    height: 38px;
+  }
+
+  .site-footer__inner {
+    padding-right: 74px;
+  }
+}
+
+/* ============================================================
+   文章列表两栏
+   ============================================================ */
+.layout-two-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .layout-two-col {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ============================================================
+   卡片与标签
+   ============================================================ */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.sidebar-card {
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+.sidebar-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--text);
+}
+
+.chip-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-size: 13px;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.chip:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.chip--active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.chip__count {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* ============================================================
+   文章列表
+   ============================================================ */
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  perspective: 1200px;
+}
+
+.post-card {
+  position: relative;
+  padding: 20px 22px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  will-change: transform;
+}
+
+.post-card:hover,
+.post-card.is-near {
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+  box-shadow: var(--shadow);
+}
+
+.post-card__title {
+  margin: 0 0 6px;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.post-card__title a:hover {
+  color: var(--accent);
+}
+
+.post-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.post-card__summary {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ============================================================
+   状态
+   ============================================================ */
+.state-box {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.state-box--error {
+  color: var(--danger);
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  margin: 0 auto 12px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.retry-btn {
+  margin-top: 12px;
+  padding: 6px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.retry-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ============================================================
+   分页
+   ============================================================ */
+.pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.pager__btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.pager__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.pager__btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.pager__info {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ============================================================
+   搜索与筛选（列表页）
+   ============================================================ */
+.search-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.search-bar__input {
+  flex: 1;
+  padding: 9px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+}
+
+.search-bar__input:focus {
+  border-color: var(--accent);
+}
+
+.search-bar__btn {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+  font-size: 13px;
+  color: var(--text-muted);
+  flex-wrap: wrap;
+}
+
+/* ============================================================
+   文章详情
+   ============================================================ */
+.article {
+  padding: 32px 34px;
+}
+
+.article__title {
+  margin: 0 0 10px;
+  font-size: 28px;
+  line-height: 1.35;
+}
+
+.article__meta {
+  color: var(--text-muted);
+  font-size: 13px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 18px;
+}
+
+.markdown-body {
+  font-size: 15.5px;
+  line-height: 1.8;
+  word-break: break-word;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3 {
+  margin: 28px 0 12px;
+  line-height: 1.4;
+}
+
+.markdown-body h1 {
+  font-size: 24px;
+}
+
+.markdown-body h2 {
+  font-size: 20px;
+}
+
+.markdown-body h3 {
+  font-size: 17px;
+}
+
+.markdown-body p {
+  margin: 12px 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 22px;
+}
+
+.markdown-body li {
+  margin: 6px 0;
+}
+
+.markdown-body blockquote {
+  margin: 16px 0;
+  padding: 10px 16px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  color: var(--text);
+  border-radius: 0 8px 8px 0;
+}
+
+.markdown-body code {
+  background: var(--surface-soft);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 13.5px;
+}
+
+.markdown-body pre {
+  background: var(--surface-soft);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  overflow-x: auto;
+}
+
+.markdown-body pre code {
+  background: transparent;
+  padding: 0;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 16px 0;
+}
+
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid var(--border);
+  padding: 8px 12px;
+}
+
+/* ============================================================
+   归档等通用块
+   ============================================================ */
+.archive-group {
+  padding: 20px 22px;
+  margin-bottom: 16px;
+}
+
+.archive-group__title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  color: var(--accent);
+}
+
+.archive-group__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 14px;
+}
+
+.archive-group__item:last-child {
+  border-bottom: none;
+}
+
+.archive-group__date {
+  color: var(--text-muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 18px;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
+/* ============================================================
+   子页面通用：页头 / 标签栏
+   —— 生活页、项目页、日志页共用这一套
+   ============================================================ */
+.page-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+
+.page-hero__main {
+  min-width: 0;
+}
+
+/* 英文小标：和横幅上的英文同一套衬线斜体 */
+.page-hero__en {
+  margin: 0 0 3px;
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 14.5px;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+}
+
+.page-hero__title {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  line-height: 1.3;
+}
+
+.page-hero__desc {
+  margin: 7px 0 0;
+  max-width: 64ch;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.page-hero__side {
+  flex-shrink: 0;
+}
+
+.page-hero__note {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 日志页右侧的三个小统计块 */
+.page-stats {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.page-stats li {
+  min-width: 88px;
+  padding: 7px 12px 8px;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  text-align: right;
+}
+
+.page-stats strong {
+  display: block;
+  font-size: 16.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.page-stats span {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* 标签栏：和顶部导航同一套规则——容器不铺底色，只有选中的有背景 */
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.tabs__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 13px 7px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 13.5px;
+  line-height: 1.5;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.tabs__item:hover {
+  background: var(--nav-hover);
+  color: var(--text);
+}
+
+.tabs__item--active {
+  background: var(--nav-active-bg);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.tabs__count {
+  font-size: 11px;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ============================================================
+   生活页（/life）：五个标签页共用同一套模板
+   ============================================================ */
+.gallery-panel {
+  animation: fade-rise 0.28s ease both;
+}
+
+/* 封面：整张图 + 左侧压住的标题与引子 */
+.gallery-cover {
+  position: relative;
+  height: 212px;
+  margin-bottom: 16px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--surface-soft);
+}
+
+.gallery-cover__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery-cover__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(6, 12, 24, 0.74) 0%,
+    rgba(6, 12, 24, 0.46) 40%,
+    rgba(6, 12, 24, 0.04) 80%
+  );
+}
+
+.gallery-cover__body {
+  position: relative;
+  height: 100%;
+  max-width: 58%;
+  padding: 0 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  color: #fff;
+}
+
+.gallery-cover__en {
+  margin: 0;
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 15px;
+  letter-spacing: 0.09em;
+  opacity: 0.82;
+}
+
+.gallery-cover__title {
+  margin: 0;
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.gallery-cover__intro {
+  margin: 5px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+  opacity: 0.88;
+}
+
+.gallery-cover__meta {
+  margin: 7px 0 0;
+  font-size: 12px;
+  opacity: 0.68;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 卡片网格：一张卡片 = 竖构图缩略图 + 标题 + 说明 + 小注脚 */
+.gallery-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(184px, 100%), 1fr));
+  align-items: start;
+  gap: 14px;
+}
+
+.gallery-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  animation: fade-rise 0.3s ease both;
+}
+
+/* 依次淡入，看起来像铺开 */
+.gallery-card:nth-child(2) {
+  animation-delay: 0.03s;
+}
+
+.gallery-card:nth-child(3) {
+  animation-delay: 0.06s;
+}
+
+.gallery-card:nth-child(4) {
+  animation-delay: 0.09s;
+}
+
+.gallery-card:nth-child(5) {
+  animation-delay: 0.12s;
+}
+
+.gallery-card:nth-child(6) {
+  animation-delay: 0.15s;
+}
+
+.gallery-card__thumb {
+  display: block;
+  aspect-ratio: 3 / 4;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface-soft);
+  box-shadow: var(--shadow-soft);
+}
+
+.gallery-card__thumb img,
+.gallery-card__thumb .art-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.gallery-card__thumb img {
+  object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.gallery-card:hover .gallery-card__thumb img {
+  transform: scale(1.055);
+}
+
+.gallery-card__title {
+  margin-top: 8px;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.gallery-card__desc {
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.gallery-card__meta {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--text-muted);
+  opacity: 0.85;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   项目导航页（/projects）
+   ============================================================ */
+.proj-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(330px, 100%), 1fr));
+  align-items: stretch;
+  gap: 14px;
+}
+
+.proj-card {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.proj-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+  box-shadow: var(--shadow);
+  transform: translateY(-2px);
+}
+
+.proj-card__thumb {
+  display: block;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--surface-soft);
+  line-height: 0;
+}
+
+.proj-card__thumb svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.proj-card__body {
+  flex: 1 1 auto;
+  padding: 13px 4px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.proj-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.proj-card__title {
+  margin: 0;
+  font-size: 15.5px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.proj-card__year {
+  flex-shrink: 0;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.proj-card__desc {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+.proj-card__detail {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  line-height: 1.75;
+}
+
+.proj-card__foot {
+  margin-top: auto;
+  padding-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.proj-card__role {
+  flex-shrink: 0;
+  padding: 2px 9px;
+  border-radius: 5px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-size: 11.5px;
+}
+
+.proj-card__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.proj-card__stack em {
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  font-size: 11px;
+  font-style: normal;
+}
+
+.empty-hint {
+  margin: 6px 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ============================================================
+   人生日志页（/journey）
+   ============================================================ */
+.jlog {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.jlog__year-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+/* 年份用英文衬线斜体的大号数字，和横幅上的英文呼应 */
+.jlog__year-num {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 31px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.jlog__year-line {
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--border);
+}
+
+.jlog__year-count {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.jlog__list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 15px;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.jlog__item {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 9px 14px;
+  border-radius: 10px;
+  transition: background 0.15s ease;
+}
+
+.jlog__item:hover {
+  background: var(--surface);
+}
+
+.jlog__item::before {
+  content: '';
+  position: absolute;
+  left: -19.5px;
+  top: 17px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background 0.15s ease;
+}
+
+.jlog__item:hover::before {
+  background: var(--accent);
+}
+
+.jlog__date {
+  flex-shrink: 0;
+  width: 64px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.jlog__month {
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.jlog__day {
+  font-size: 12px;
+}
+
+.jlog__day::before {
+  content: '/';
+  margin-right: 4px;
+  opacity: 0.5;
+}
+
+.jlog__text {
+  min-width: 0;
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+/* ============================================================
+   子页面的窄屏收尾
+   ============================================================ */
+@media (max-width: 760px) {
+  .page-hero {
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+
+  .page-hero__title {
+    font-size: 22px;
+  }
+
+  /* 封面矮一档，文字铺满整宽，不再只占左边 */
+  .gallery-cover {
+    height: 178px;
+  }
+
+  .gallery-cover__body {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+
+  .gallery-cover__title {
+    font-size: 22px;
+  }
+
+  .gallery-cover__intro {
+    display: none;
+  }
+
+  .jlog__year-num {
+    font-size: 26px;
+  }
+
+  .jlog__item {
+    gap: 12px;
+    padding: 8px 10px;
+  }
+
+  .jlog__date {
+    width: 56px;
+  }
+
+  .jlog__text {
+    font-size: 13.5px;
+  }
+}
+
+@media (max-width: 560px) {
+  /* 竖构图缩略图在手机上改成两列，一屏能看到更多 */
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 11px;
+  }
+
+  /* 标签收窄一点，5 个标签刚好排成一行 */
+  .tabs__item {
+    gap: 5px;
+    padding: 5px 10px 6px;
+    font-size: 13px;
+  }
+
+  .page-stats {
+    gap: 6px;
+  }
+
+  .page-stats li {
+    min-width: 76px;
+    padding: 6px 10px 7px;
+  }
+
+  .page-stats strong {
+    font-size: 15px;
+  }
+}
+
+/* ============================================================
+   字体方案（Fonts）
+   正文 / 标题：思源黑体  ·  人生语录：霞鹜文楷
+   英文：Cormorant Garamond Italic  ·  签名：Caveat
+   —— 放在文件末尾，同权重时覆盖前面的同名规则
+   ============================================================ */
+
+/* 人生语录：正文用霞鹜文楷；署名当作手写签名，用 Caveat */
+.quote__text {
+  font-family: var(--font-quote);
+}
+
+.quote__author {
+  font-family: var(--font-sign);
+  font-style: normal;
+  font-size: 16px;
+  letter-spacing: 0.4px;
+  line-height: 1.2;
+}
+
+/* 英文：站点里出现的英文标签 / 字段名，统一用 Cormorant Garamond Italic
+   （注意：能力条 label 已改成中文，不能再走这里，否则中文会被合成斜体） */
+.card-head__sub,
+.attrs__caption,
+.os-head__name,
+.facts__row dt,
+.journey__year,
+/* 第一行横幅上的英文：名字 + 身份 */
+.banner__name,
+.banner__role {
+  font-family: var(--font-en);
+  font-style: italic;
+}
+
+/* 名字用这套衬线斜体时补两点：
+   1) 只加载到 600 的字重，沿用黑体的 800 会被浏览器伪粗体，反而发虚；
+   2) 衬线斜体比黑体窄，字距给多一点才撑得住原来那行 logo 的观感 */
+.banner__name {
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}

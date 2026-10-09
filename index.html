@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>我的个人博客</title>
+    <meta name="description" content="记录技术、阅读与生活的个人博客" />
+
+    <!-- 字体：思源黑体(Noto Sans SC) / 霞鹜文楷 / Cormorant Garamond / Caveat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@1,400;1,500;1,600&family=Caveat:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- 霞鹜文楷：自托管（不依赖第三方 CDN） -->
+    <link href="/fonts/lxgw-wenkai/lxgwwenkai-regular.css" rel="stylesheet" />
+
+    <script>
+      // 在首屏渲染前套用已保存的主题，避免暗色模式下的白屏闪烁
+      try {
+        var saved = localStorage.getItem('blog-theme');
+        if (
+          saved === 'dark' ||
+          (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ) {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      } catch (error) {
+        /* 忽略隐私模式下的读取失败 */
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
